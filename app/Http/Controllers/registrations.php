@@ -45,7 +45,7 @@ class registrations extends Controller
         if ($validator->fails()) {
             return new JsonResponse(['errors' => $validator->errors()], 422);
         }
-
+        
         $registration = Registration::create($request->all());
         return new JsonResponse($registration, 201);
     }

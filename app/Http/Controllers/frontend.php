@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 class frontend extends Controller
 {
     public function store(Request $request){
-        
+        //|unique:registrations,PhoneNumber
         $request->validate(
             [
-                'MobileNumber' => 'required|numeric|unique:registrations,PhoneNumber',
+                'MobileNumber' => 'required|numeric',
                 'FirstName' => 'required|string',
                 'LastName' => 'required|string',
                 'Address' => 'required|string',
@@ -66,13 +66,40 @@ class frontend extends Controller
         $statusCode = $response->getStatusCode();
         $responseText = $response->getBody()->getContents();
 
-        return response()->json([
-            'status_code' => $statusCode,
-            'response' => $responseText,
-        ]);
+         return view('OTPvalidate', ['mobile' => $mobileNumber]);
+
+        // return response()->json([
+        //     'status_code' => $statusCode,
+        //     'response' => $responseText,
+        // ]);
 
     }
 
-    
-    
+    public function validateOTP(Request $request)
+    {
+        // Get the entered OTP from the request
+        $enteredOTP = $request->input('otp');
+        $mobile = $request->input('mobile');
+
+        $registration = Registration::where('PhoneNumber', $mobile)->first();
+
+        if ($registration) {
+            // OTP found, return the OTP details
+            if($registration->OTP == $enteredOTP){
+                $registration->update(['OTP_verify' => 'true']);
+                $isValidOTP = true;
+            }else{
+                $isValidOTP = false;
+            }
+        } else {
+            // OTP not found for the given phone number
+            $isValidOTP = false;
+        }
+        
+        if ($isValidOTP) {
+            return response()->json(['message' => 'OTP validation successful'], 200);
+        } else {
+            return response()->json(['message' => 'Invalid OTP'], 400);
+        }
+    }
 }

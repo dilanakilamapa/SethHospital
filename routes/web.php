@@ -22,3 +22,4 @@ Route::get('/api/docs', function () {
 });
 
 Route::post('/submit-form', 'App\Http\Controllers\frontend@store')->name('submit.form');
+Route::post('/validateOTP', 'App\Http\Controllers\frontend@validateOTP')->name('validateOTP');

@@ -1,0 +1,9 @@
+.background-image-div {
+    background-image: url("../img/doca.jpg");
+    background-size: cover; /* Adjust how the background image is displayed */
+    background-position: center center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    width: 100%; /* Set the width of the div */
+    height: 400px; /* Set the height of the div (adjust as needed) */
+    /* Add any other styling for the div as needed */
+}

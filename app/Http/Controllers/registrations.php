@@ -17,6 +17,20 @@ class registrations extends Controller
         $registrations = registration::all();
         return new JsonResponse($registrations);
     }
+    
+    /**
+     * Search registrations by phone number.
+     */
+    public function searchByPhoneNumber(string $number)
+    {
+        $registrations = Registration::where('PhoneNumber', $number)->get();
+        
+        if ($registrations->isEmpty()) {
+            return response()->json(['message' => 'No registrations found for the given phone number.'], 404);
+        }
+
+        return response()->json($registrations);
+    }
 
     /**
      * Display the specified resource.
@@ -33,6 +47,7 @@ class registrations extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'PhoneNumber' => 'required|integer',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'address' => 'required|string',
@@ -58,6 +73,7 @@ class registrations extends Controller
         $registration = Registration::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
+            'PhoneNumber' => 'sometimes|required|integer',
             'first_name' => 'sometimes|required|string',
             'last_name' => 'sometimes|required|string',
             'address' => 'sometimes|required|string',

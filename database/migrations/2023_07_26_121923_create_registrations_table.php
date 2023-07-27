@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('registrations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('PhoneNumber');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('address');

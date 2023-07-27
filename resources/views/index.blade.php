@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
@@ -56,50 +57,59 @@
             <div class="row">
                 <div class="col-lg-3 col-md-12 m-3 bg-white shadow p-3 mb-5 bg-body rounded fw-normal"
                     style="color: #20C997;">
-                    <form action="" method="Post">
+                    <form action="{{ route('submit.form') }}" method="POST">
+                        @csrf
                         <div class="mb-3 mt-2 ms-3 me-3">
                             <label for="exampleFormControlInput1" class="form-label">Mobile Number</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput1">
+                            <input type="text" class="form-control" id="MobileNumber" name="MobileNumber">
                         </div>
                         <div class="mb-3 ms-3 me-3">
                             <label for="exampleFormControlInput1" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput1">
+                            <input type="text" class="form-control" id="FirstName" name="FirstName">
                         </div>
                         <div class="mb-3 ms-3 me-3">
                             <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput1">
+                            <input type="text" class="form-control" id="LastName" name="LastName">
                         </div>
                         <div class="mb-3 ms-3 me-3">
                             <label for="exampleFormControlInput1" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput1">
+                            <input type="text" class="form-control" id="Address" name="Address">
                         </div>
                         <div class="mb-3 ms-3 me-3">
                             <label for="exampleFormControlInput1" class="form-label">Age</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput1">
+                            <input type="text" class="form-control" id="Age" name="Age">
                         </div>
                         <div class="mb-3 ms-3 me-3">
                             <label for="exampleFormControlInput1" class="form-label">Gender</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault1">
-                                <label class="form-check-label" for="flexRadioDefault1">
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="male"
+                                    checked>
+                                <label class="form-check-label" for="male">
                                     Male
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault2" checked>
-                                <label class="form-check-label" for="flexRadioDefault2">
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                                <label class="form-check-label" for="female">
                                     Female
                                 </label>
                             </div>
                         </div>
                         <div class="row ">
                             <div class="col text-center">
-                                <button type="button" class="btn btn-success text-center">Success</button>
+                                <button type="submit" class="btn btn-success text-center">Success</button>
                             </div>
                         </div>
                     </form>
+                    @if ($errors->any())
+                    <div class="alert alert-danger mt-3">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </div>
                 <div class=" col-lg-7 col-md-12 ms-4 bg-white shadow p-3 mb-5 bg-body rounded "
                     style="margin-top: 250px; height: min-content;">
@@ -134,10 +144,6 @@
         </div>
 
     </div>
-
-
-
-
 </body>
 
 </html>

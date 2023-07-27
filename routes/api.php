@@ -28,5 +28,7 @@ Route::post('/registrations', 'App\Http\Controllers\registrations@store');
 Route::get('/registrations/{id}', 'App\Http\Controllers\registrations@show');
 Route::put('/registrations/{id}', 'App\Http\Controllers\registrations@update');
 Route::delete('/registrations/{id}', 'App\Http\Controllers\registrations@destroy');
+Route::get('/registrations/search{number}', 'App\Http\Controllers\registrations@searchByPhoneNumber');
+
     
 Route::post("login",[userController::class,'index']);

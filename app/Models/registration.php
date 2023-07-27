@@ -10,6 +10,7 @@ class registration extends Model
     use HasFactory;
 
     protected $fillable = [
+        'PhoneNumber',
         'first_name',
         'last_name',
         'address',

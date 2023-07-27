@@ -20,3 +20,5 @@ Route::get('/', function () {
 Route::get('/api/docs', function () {
     return file_get_contents(public_path('docs/index.html'));
 });
+
+Route::post('/submit-form', 'App\Http\Controllers\frontend@store')->name('submit.form');

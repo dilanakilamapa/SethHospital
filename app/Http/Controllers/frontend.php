@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\registration;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
@@ -43,6 +44,7 @@ class frontend extends Controller
         $registration->gender = $gender;
         $registration->OTP = $OTP_number;
         $registration->OTP_verify = 'false';
+        $registration->otp_expiry = Carbon::now()->addMinutes(5);
         $registration->save();
 
         //send sms
@@ -66,7 +68,7 @@ class frontend extends Controller
         $statusCode = $response->getStatusCode();
         $responseText = $response->getBody()->getContents();
 
-         return view('OTPvalidate', ['mobile' => $mobileNumber]);
+        return view('OTPvalidate', ['mobile' => $mobileNumber]);
 
         // return response()->json([
         //     'status_code' => $statusCode,
@@ -82,24 +84,34 @@ class frontend extends Controller
         $mobile = $request->input('mobile');
 
         $registration = Registration::where('PhoneNumber', $mobile)->first();
-
+        $storedExpiryTime = $registration->otp_expiry;
         if ($registration) {
             // OTP found, return the OTP details
-            if($registration->OTP == $enteredOTP){
-                $registration->update(['OTP_verify' => 'true']);
-                $isValidOTP = true;
+            if($registration->OTP == $enteredOTP ){
+                if( Carbon::now()->lt($storedExpiryTime)){
+                    $registration->update(['OTP_verify' => 'true']);
+                    //$isValidOTP = true;
+                    return response()->json(['message' => 'OTP validation successful'], 200);
+                }
+                else{
+                    $registration->delete();
+                    return response()->json(['message' => 'OTP is has expired'], 400);
+                }
+                
             }else{
-                $isValidOTP = false;
+                //$isValidOTP = false;
+                return response()->json(['message' => 'Invalid OTP'], 400);
             }
         } else {
             // OTP not found for the given phone number
-            $isValidOTP = false;
+            //$isValidOTP = false;
+            return response()->json(['message' => 'OTP not found for the given phone number'], 400);
         }
         
-        if ($isValidOTP) {
-            return response()->json(['message' => 'OTP validation successful'], 200);
-        } else {
-            return response()->json(['message' => 'Invalid OTP'], 400);
-        }
+        // if ($isValidOTP) {
+        //     return response()->json(['message' => 'OTP validation successful'], 200);
+        // } else {
+        //     return response()->json(['message' => 'Invalid OTP'], 400);
+        // }
     }
 }

@@ -18,5 +18,6 @@ class registration extends Model
         'gender',
         'OTP',
         'OTP_verify',
+        'otp_expiry',
     ];
 }

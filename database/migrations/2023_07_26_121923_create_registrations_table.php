@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum("gender",['male','female']);
             $table->unsignedBigInteger('OTP');
             $table->enum("OTP_verify",['true','false']);
+            $table->timestamp('otp_expiry')->nullable();
             $table->timestamps();
         });
     }

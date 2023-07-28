@@ -9,6 +9,31 @@ use Illuminate\Support\Facades\Validator;
 
 class registrations extends Controller
 {
+    public function sync()
+    {
+        $registrations = Registration::where('OTP_verify', 'true')
+                                    ->where('sync', 'false')
+                                    ->get();
+
+        return new JsonResponse($registrations);
+    }
+
+    public function updateSyncStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ids' => 'required|array',
+            'ids.*' => 'integer|exists:registrations,id',
+        ]);
+
+        if ($validator->fails()) {
+            return new JsonResponse(['errors' => $validator->errors()], 422);
+        }
+
+        $ids = $request->input('ids');
+        Registration::whereIn('id', $ids)->update(['sync' => 'true']);
+
+        return new JsonResponse(['message' => 'Sync status updated successfully'], 200);
+    }
     /**
      * Display a listing of the resource.
      */

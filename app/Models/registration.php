@@ -19,5 +19,6 @@ class registration extends Model
         'OTP',
         'OTP_verify',
         'otp_expiry',
+        'sync',
     ];
 }

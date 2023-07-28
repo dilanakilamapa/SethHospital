@@ -29,6 +29,10 @@ Route::get('/registrations/{id}', 'App\Http\Controllers\registrations@show');
 Route::put('/registrations/{id}', 'App\Http\Controllers\registrations@update');
 Route::delete('/registrations/{id}', 'App\Http\Controllers\registrations@destroy');
 Route::get('/registrations/search{number}', 'App\Http\Controllers\registrations@searchByPhoneNumber');
+Route::get('/sync', 'App\Http\Controllers\registrations@sync');
+Route::put('/updateSyncStatus', 'App\Http\Controllers\registrations@updateSyncStatus');
+
+
 
     
 Route::post("login",[userController::class,'index']);

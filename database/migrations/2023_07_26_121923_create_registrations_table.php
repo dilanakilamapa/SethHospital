@@ -20,8 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('age');
             $table->enum("gender",['male','female']);
             $table->unsignedBigInteger('OTP');
-            $table->enum("OTP_verify",['true','false']);
+            $table->enum("OTP_verify",['true','false'])->default('false');
             $table->timestamp('otp_expiry')->nullable();
+            $table->enum("sync", ['true', 'false'])->default('false');
             $table->timestamps();
         });
     }
